@@ -1,6 +1,6 @@
 # my_todo_app
 
-A new Flutter project.
+This project created for practice flutter and hive.
 
 ## Getting Started
 
