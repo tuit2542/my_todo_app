@@ -22,7 +22,9 @@ class DialogBox extends StatelessWidget {
     return AlertDialog(
       backgroundColor: Colors.teal[200],
       content: Container(
-        height: size.height * 15 / 100,
+        height: MediaQuery.of(context).orientation == Orientation.portrait
+            ? size.height * 15 / 100
+            : size.height * 30 / 100,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -44,6 +46,56 @@ class DialogBox extends StatelessWidget {
                 MyButton(
                   text: "Cancel",
                   onPressed: onCancel,
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ContextDialogBox extends StatelessWidget {
+  VoidCallback onCancel;
+  String text;
+
+  ContextDialogBox({
+    super.key,
+    required this.onCancel,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
+    return AlertDialog(
+      backgroundColor: Colors.teal[200],
+      content: Container(
+        height: MediaQuery.of(context).orientation == Orientation.portrait
+            ? size.height * 15 / 100
+            : size.height * 30 / 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              text,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+              // overflow: TextOverflow.ellipsis,
+              softWrap: true,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                MyButton(
+                  text: "Exit",
+                  onPressed: onCancel,
+                  color: Colors.teal,
                 )
               ],
             )

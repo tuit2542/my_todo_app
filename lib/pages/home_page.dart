@@ -36,11 +36,26 @@ class _HomePageState extends State<HomePage> {
   }
 
   void saveNewTask() {
-    setState(() {
-      db.toDoList.add([_controller.text, false]);
-      _controller.clear();
-    });
-    Navigator.of(context).pop();
+    if (_controller.text != "") {
+      setState(() {
+        db.toDoList.add([_controller.text, false]);
+        _controller.clear();
+      });
+      Navigator.of(context).pop();
+    } else {
+      Navigator.of(context).pop();
+      showDialog(
+        context: context,
+        builder: (context) {
+          return ContextDialogBox(
+            text: "Please Enter Data",
+            onCancel: () {
+              Navigator.of(context).pop();
+            },
+          );
+        },
+      );
+    }
     db.updateDatabase();
   }
 
@@ -89,16 +104,18 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: ListView.builder(
-        itemCount: db.toDoList.length,
-        itemBuilder: (context, index) {
-          return ToDoTile(
-            taskName: db.toDoList[index][0],
-            taskCompleted: db.toDoList[index][1],
-            onChanged: (value) => checkBoxChanged(value, index),
-            deleteTile: (context) => deleteTask(index),
-          );
-        },
+      body: Scrollbar(
+        child: ListView.builder(
+          itemCount: db.toDoList.length,
+          itemBuilder: (context, index) {
+            return ToDoTile(
+              taskName: db.toDoList[index][0],
+              taskCompleted: db.toDoList[index][1],
+              onChanged: (value) => checkBoxChanged(value, index),
+              deleteTile: (context) => deleteTask(index),
+            );
+          },
+        ),
       ),
     );
   }
